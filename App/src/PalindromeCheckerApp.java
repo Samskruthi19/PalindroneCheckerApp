@@ -53,6 +53,8 @@ public class PalindromeCheckerApp{
             fast = fast.next.next;
         }
 
+
+
         Node secondHalf = reverse(slow);
         Node firstHalf = head;
 
