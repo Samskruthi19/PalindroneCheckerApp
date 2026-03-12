@@ -1,80 +1,34 @@
-class Node {
-    char data;
-    Node next;
+import java.util.Scanner;
 
-    Node(char data) {
-        this.data = data;
-        this.next = null;
+class PalindromeChecker {
+
+    public boolean checkPalindrome(String str) {
+        String normalized = str.replaceAll("\\s+", "").toLowerCase();
+        int start = 0;
+        int end = normalized.length() - 1;
+
+        while (start < end) {
+            if (normalized.charAt(start) != normalized.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
     }
 }
 
 public class PalindromeCheckerApp {
 
-    public static Node createList(String str) {
-        Node head = null, tail = null;
-
-        for (char c : str.toCharArray()) {
-            Node newNode = new Node(c);
-
-            if (head == null) {
-                head = tail = newNode;
-            } else {
-                tail.next = newNode;
-                tail = newNode;
-            }
-        }
-        return head;
-    }
-
-    public static Node reverse(Node head) {
-        Node prev = null;
-        Node current = head;
-        Node next = null;
-
-        while (current != null) {
-            next = current.next;
-            current.next = prev;
-            prev = current;
-            current = next;
-        }
-        return prev;
-    }
-
-    public static boolean isPalindrome(Node head) {
-        if (head == null || head.next == null) {
-            return true;
-        }
-
-        Node slow = head;
-        Node fast = head;
-
-        while (fast != null && fast.next != null) {
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-
-        Node secondHalf = reverse(slow);
-        Node firstHalf = head;
-
-        while (secondHalf != null) {
-            if (firstHalf.data != secondHalf.data) {
-                return false;
-            }
-            firstHalf = firstHalf.next;
-            secondHalf = secondHalf.next;
-        }
-
-        return true;
-    }
-
     public static void main(String[] args) {
-        String input = "level";
+        Scanner sc = new Scanner(System.in);
 
-        Node head = createList(input);
+        System.out.println("Enter a string:");
+        String input = sc.nextLine();
 
-        boolean result = isPalindrome(head);
+        PalindromeChecker checker = new PalindromeChecker();
+        boolean result = checker.checkPalindrome(input);
 
-        System.out.println("Input: " + input);
-        System.out.println("Is Palindrome? " + result);
+        System.out.println("Palindrome? " + result);
     }
 }
