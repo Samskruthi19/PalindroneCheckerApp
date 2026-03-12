@@ -16,6 +16,9 @@ public class PalindromeCheckerApp {
         }
         return true;
     }
+}
+
+public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
