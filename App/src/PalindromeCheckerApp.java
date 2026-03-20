@@ -34,53 +34,39 @@ class DequeStrategy implements PalindromeStrategy {
     }
 }
 
-class PalindromeChecker {
-    private PalindromeStrategy strategy;
-
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public boolean check(String input) {
-        if (strategy == null) {
-            throw new IllegalStateException("Strategy not set!");
-        }
-        return strategy.isPalindrome(input);
+class ReverseStringStrategy implements PalindromeStrategy {
+    public boolean isPalindrome(String input) {
+        String reversed = new StringBuilder(input).reverse().toString();
+        return input.equals(reversed);
     }
 }
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        PalindromeChecker checker = new PalindromeChecker();
 
         System.out.println("Enter a string:");
         String input = scanner.nextLine();
 
-        System.out.println("Choose Strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
+        List<PalindromeStrategy> strategies = new ArrayList<>();
+        strategies.add(new StackStrategy());
+        strategies.add(new DequeStrategy());
+        strategies.add(new ReverseStringStrategy());
 
-        int choice = scanner.nextInt();
+        String[] names = {"Stack Strategy", "Deque Strategy", "Reverse String Strategy"};
 
-        switch (choice) {
-            case 1:
-                checker.setStrategy(new StackStrategy());
-                break;
-            case 2:
-                checker.setStrategy(new DequeStrategy());
-                break;
-            default:
-                System.out.println("Invalid choice!");
-                return;
-        }
+        for (int i = 0; i < strategies.size(); i++) {
+            PalindromeStrategy strategy = strategies.get(i);
 
-        boolean result = checker.check(input);
+            long startTime = System.nanoTime();
+            boolean result = strategy.isPalindrome(input);
+            long endTime = System.nanoTime();
 
-        if (result) {
-            System.out.println("The string is a palindrome.");
-        } else {
-            System.out.println("The string is NOT a palindrome.");
+            long duration = endTime - startTime;
+
+            System.out.println(names[i] + ": " + (result ? "Palindrome" : "Not Palindrome"));
+            System.out.println("Execution Time: " + duration + " ns");
+            System.out.println();
         }
 
         scanner.close();
